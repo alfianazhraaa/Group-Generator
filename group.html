@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eleven One Shuffle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --light-gray: #B4B4B8;
+            --pale-gray: #C7C8CC;
+            --warm-gray: #E3E1D9;
+            --cream: #F2EFE5;
+            --accent: #FF9EAA;
+            --accent-blue: #6DA5C0;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Comic Neue', cursive;
+            background-color: var(--cream);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--pale-gray);
+            padding: 30px 0;
+            text-align: center;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 16px var(--shadow);
+            border: 3px dashed var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px dotted var(--accent);
+            border-radius: 25px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.8rem;
+            color: #333;
+            font-family: 'Fredoka One', cursive;
+            text-shadow: 2px 2px 0 var(--warm-gray);
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.0rem;
+            margin-top: 10px;
+            color: #555;
+            font-weight: 700;
+        }
+        
+        .input-section {
+            background-color: var(--warm-gray);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px var(--shadow);
+            text-align: center;
+            border: 2px solid var(--pale-gray);
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+            font-size: 1.2rem;
+            color: #555;
+        }
+        
+        input {
+            padding: 15px;
+            border: 3px solid var(--light-gray);
+            border-radius: 15px;
+            background-color: var(--cream);
+            color: #333;
+            font-size: 1.1rem;
+            width: 100px;
+            text-align: center;
+            font-family: 'Comic Neue', cursive;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 158, 170, 0.3);
+        }
+        
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-family: 'Fredoka One', cursive;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 0 #d87a87;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button:hover {
+            background-color: #ff8a9a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #d87a87;
+        }
+        
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #d87a87;
+        }
+        
+        button::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+            transition: all 0.3s ease;
+        }
+        
+        button:hover::after {
+            left: 100%;
+        }
+        
+        .results {
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .groups-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .group {
+            background-color: var(--pale-gray);
+            border-radius: 20px;
+            padding: 25px;
+            flex: 1;
+            min-width: 250px;
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: transform 0.3s ease;
+            border: 2px solid var(--light-gray);
+            position: relative;
+        }
+        
+        .group:hover {
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 0 15px 30px var(--shadow);
+        }
+        
+        .group::before {
+            content: "";
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+        
+        .group-header {
+            background-color: var(--light-gray);
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-family: 'Fredoka One', cursive;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+            font-size: 1.2rem;
+            box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+        }
+        
+        .member-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .member {
+            padding: 10px 0;
+            border-bottom: 2px dotted rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        
+        .member:last-child {
+            border-bottom: none;
+        }
+        
+        .gender {
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .male {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+        
+        .female {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .stats {
+            margin-top: 30px;
+            background-color: var(--warm-gray);
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            border: 2px solid var(--pale-gray);
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+        
+        .stat-box {
+            text-align: center;
+            padding: 15px;
+            background-color: var(--pale-gray);
+            border-radius: 15px;
+            flex: 1;
+            min-width: 150px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin: 5px 0;
+            font-family: 'Fredoka One', cursive;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background-color: var(--accent);
+            opacity: 0;
+            z-index: 9999;
+            animation: confetti 5s ease-out;
+            border-radius: 50%;
+        }
+        
+        @keyframes confetti {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(1000px) rotate(720deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: var(--light-gray);
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
+        .special-pair {
+            background-color: rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            padding: 2px 5px;
+            border: 1px dashed gold;
+        }
+        
+        @media (max-width: 768px) {
+            .groups-container {
+                flex-direction: column;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .group {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Group Generator</h1>
+            <p class="subtitle">Need groups? Hate decisions? Let this do the job. It's like spinning a friendship roulette. Sometimes lucky, sometimes “uh oh.” But hey, that’s life in class 11.1.
+</p>
+        </header>
+        
+        <div class="input-section">
+            <div class="form-group">
+                <label for="groupCount">Number of Groups:</label>
+                <input type="number" id="groupCount" min="2" max="10" value="2">
+            </div>
+            <button id="generateBtn">Generate Groups</button>
+        </div>
+        
+        <div id="results" class="results">
+            <div class="groups-container" id="groupsContainer"></div>
+            
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="totalMembers">0</div>
+                    <div class="stat-label">Total Members</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalMales">0</div>
+                    <div class="stat-label">Male Members</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="totalFemales">0</div>
+                    <div class="stat-label">Female Members</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="avgPerGroup">0</div>
+                    <div class="stat-label">Avg per Group</div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button id="regenerateBtn">Shuffle Again</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Progam by Alfian</p>
+    </footer>
+    
+    <script>
+        // Data
+        const members = [
+            { name: "Ghofur", gender: "L" },
+            { name: "Kafil", gender: "L" },
+            { name: "Ainur", gender: "P" },
+            { name: "Airin", gender: "P" },
+            { name: "Arini", gender: "P" },
+            { name: "Ayu", gender: "P" },
+            { name: "Azha", gender: "P" },
+            { name: "Catur", gender: "L" },
+            { name: "Yelsa", gender: "P" },
+            { name: "Deni", gender: "L" },
+            { name: "Hapies", gender: "L" },
+            { name: "Didit", gender: "L" },
+            { name: "Diyah", gender: "P" },
+            { name: "Diyana", gender: "P" },
+            { name: "Eric", gender: "L" },
+            { name: "Farel", gender: "L" },
+            { name: "Haidar", gender: "L" },
+            { name: "Ifa", gender: "P" },
+            { name: "Bila", gender: "P" },
+            { name: "Akmal", gender: "L" },
+            { name: "Fatur", gender: "L" },
+            { name: "Maul", gender: "P" },
+            { name: "Fikri", gender: "L" },
+            { name: "Azis", gender: "L" },
+            { name: "Adit", gender: "L" },
+            { name: "Alfian", gender: "L" },
+            { name: "Agam", gender: "L" },
+            { name: "Alan", gender: "L" },
+            { name: "Yuan", gender: "P" },
+            { name: "Sasa", gender: "P" },
+            { name: "Rasya", gender: "P" },
+            { name: "Salsa", gender: "P" },
+            { name: "Ajeng", gender: "P" },
+            { name: "Wahyu", gender: "L" },
+            { name: "Zery", gender: "P" }
+        ];
+        
+        // Special pair that should be together
+        const SPECIAL_PAIR = ["Alfian", "Ajeng"];
+        
+        // DOM elements
+        const groupCountInput = document.getElementById('groupCount');
+        const generateBtn = document.getElementById('generateBtn');
+        const regenerateBtn = document.getElementById('regenerateBtn');
+        const resultsDiv = document.getElementById('results');
+        const groupsContainer = document.getElementById('groupsContainer');
+        const totalMembersSpan = document.getElementById('totalMembers');
+        const totalMalesSpan = document.getElementById('totalMales');
+        const totalFemalesSpan = document.getElementById('totalFemales');
+        const avgPerGroupSpan = document.getElementById('avgPerGroup');
+        
+        // Event listeners
+        generateBtn.addEventListener('click', generateGroups);
+        regenerateBtn.addEventListener('click', generateGroups);
+        
+        // Generate groups function
+        function generateGroups() {
+            const groupCount = parseInt(groupCountInput.value);
+            
+            if (groupCount < 2 || groupCount > 10) {
+                alert('Please enter a number between 2 and 10');
+                return;
+            }
+            
+            // Shuffle members while keeping special pair together
+            let shuffledMembers = shuffleMembers([...members]);
+            
+            // Separate males and females
+            const males = shuffledMembers.filter(member => member.gender === 'L' && !SPECIAL_PAIR.includes(member.name));
+            const females = shuffledMembers.filter(member => member.gender === 'P' && !SPECIAL_PAIR.includes(member.name));
+            
+            // Get special pair members
+            const specialPairMembers = shuffledMembers.filter(member => SPECIAL_PAIR.includes(member.name));
+            
+            // Initialize groups
+            const groups = Array.from({ length: groupCount }, () => ({
+                members: [],
+                maleCount: 0,
+                femaleCount: 0
+            }));
+            
+            // Special case for 5 and 7 groups
+            let targetSize;
+            if (groupCount === 5) {
+                targetSize = 7;
+            } else if (groupCount === 7) {
+                targetSize = 5;
+            } else {
+                // Calculate base size and remainder
+                const baseSize = Math.floor(members.length / groupCount);
+                const remainder = members.length % groupCount;
+                targetSize = baseSize;
+            }
+            
+            // Distribute special pair first
+            if (specialPairMembers.length === 2) {
+                // Find the group with the least members to place the special pair
+                groups.sort((a, b) => a.members.length - b.members.length);
+                groups[0].members.push(...specialPairMembers);
+                specialPairMembers.forEach(member => {
+                    if (member.gender === 'L') groups[0].maleCount++;
+                    else groups[0].femaleCount++;
+                });
+            }
+            
+            // Distribute males
+            distributeMembers(males, groups, 'L', targetSize);
+            
+            // Distribute females
+            distributeMembers(females, groups, 'P', targetSize);
+            
+            // Sort each group by name
+            groups.forEach(group => {
+                group.members.sort((a, b) => a.name.localeCompare(b.name));
+            });
+            
+            // Display results
+            displayGroups(groups);
+            
+            // Show results section
+            resultsDiv.style.display = 'block';
+            
+            // Create confetti effect
+            createConfetti();
+        }
+        
+        // Shuffle members while keeping special pair together
+        function shuffleMembers(members) {
+            // Extract special pair
+            const specialPair = members.filter(m => SPECIAL_PAIR.includes(m.name));
+            const regularMembers = members.filter(m => !SPECIAL_PAIR.includes(m.name));
+            
+            // Shuffle regular members
+            for (let i = regularMembers.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [regularMembers[i], regularMembers[j]] = [regularMembers[j], regularMembers[i]];
+            }
+            
+            // Insert special pair at random position
+            const insertPos = Math.floor(Math.random() * (regularMembers.length + 1));
+            regularMembers.splice(insertPos, 0, ...specialPair);
+            
+            return regularMembers;
+        }
+        
+        // Distribute members to groups with balanced gender
+        function distributeMembers(memberList, groups, gender, targetSize) {
+            // Sort groups by current size (ascending) and then by gender count
+            const sortedGroups = [...groups].sort((a, b) => {
+                if (a.members.length !== b.members.length) {
+                    return a.members.length - b.members.length;
+                }
+                return gender === 'L' ? a.maleCount - b.maleCount : a.femaleCount - b.femaleCount;
+            });
+            
+            memberList.forEach(member => {
+                // Find the best group for this member
+                let bestGroup = sortedGroups[0];
+                let bestScore = Infinity;
+                
+                for (const group of sortedGroups) {
+                    // Skip if group is already at target size (for special cases)
+                    if (targetSize && group.members.length >= targetSize) continue;
+                    
+                    // Calculate a score based on current size and gender balance
+                    const sizeScore = group.members.length * 2; // Weight size more
+                    const genderScore = gender === 'L' ? group.maleCount : group.femaleCount;
+                    const totalScore = sizeScore + genderScore;
+                    
+                    if (totalScore < bestScore) {
+                        bestScore = totalScore;
+                        bestGroup = group;
+                    }
+                }
+                
+                // Add member to the selected group
+                bestGroup.members.push(member);
+                if (gender === 'L') {
+                    bestGroup.maleCount++;
+                } else {
+                    bestGroup.femaleCount++;
+                }
+                
+                // Re-sort groups for next iteration
+                sortedGroups.sort((a, b) => {
+                    if (a.members.length !== b.members.length) {
+                        return a.members.length - b.members.length;
+                    }
+                    return gender === 'L' ? a.maleCount - b.maleCount : a.femaleCount - b.femaleCount;
+                });
+            });
+        }
+        
+        // Display groups function
+        function displayGroups(groups) {
+            groupsContainer.innerHTML = '';
+            
+            // Calculate stats
+            const totalMembers = members.length;
+            const totalMales = members.filter(m => m.gender === 'L').length;
+            const totalFemales = members.filter(m => m.gender === 'P').length;
+            const avgPerGroup = (totalMembers / groups.length).toFixed(1);
+            
+            // Update stats
+            totalMembersSpan.textContent = totalMembers;
+            totalMalesSpan.textContent = totalMales;
+            totalFemalesSpan.textContent = totalFemales;
+            avgPerGroupSpan.textContent = avgPerGroup;
+            
+            // Create group elements
+            groups.forEach((group, index) => {
+                const groupElement = document.createElement('div');
+                groupElement.className = 'group';
+                
+                const groupHeader = document.createElement('div');
+                groupHeader.className = 'group-header';
+                groupHeader.textContent = `Group ${String.fromCharCode(65 + index)} (${group.members.length} members)`;
+                
+                const memberList = document.createElement('ul');
+                memberList.className = 'member-list';
+                
+                group.members.forEach(member => {
+                    const memberItem = document.createElement('li');
+                    memberItem.className = 'member';
+                    
+                    const nameSpan = document.createElement('span');
+                    if (SPECIAL_PAIR.includes(member.name)) {
+                        nameSpan.textContent = member.name;
+                        
+                    } else {
+                        nameSpan.textContent = member.name;
+                    }
+                    
+                    const genderSpan = document.createElement('span');
+                    genderSpan.className = 'gender ' + (member.gender === 'L' ? 'male' : 'female');
+                    genderSpan.textContent = member.gender === 'L' ? '♂' : '♀';
+                    
+                    memberItem.appendChild(nameSpan);
+                    memberItem.appendChild(genderSpan);
+                    memberList.appendChild(memberItem);
+                });
+                
+                const groupStats = document.createElement('div');
+                groupStats.style.marginTop = '15px';
+                groupStats.style.fontSize = '1rem';
+                groupStats.style.textAlign = 'center';
+                groupStats.style.color = '#555';
+                groupStats.style.fontWeight = 'bold';
+                groupStats.textContent = `♂ ${group.maleCount} | ♀ ${group.femaleCount}`;
+                
+                groupElement.appendChild(groupHeader);
+                groupElement.appendChild(memberList);
+                groupElement.appendChild(groupStats);
+                groupsContainer.appendChild(groupElement);
+            });
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                
+                // Random position
+                confetti.style.left = Math.random() * 100 + 'vw';
+                
+                // Random size
+                const size = Math.random() * 10 + 5;
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                
+                // Random color
+                const colors = ['#FF9EAA', '#6DA5C0', '#B4B4B8', '#E3E1D9'];
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random animation duration
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+    </script>
+</body>
+</html>
